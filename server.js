@@ -30,6 +30,12 @@ app.get("/api/hello", function (req, res) {
 // ***
 app.get("/api/:date?", function (req, res) {
   let reqpars = req.params.date;
+  reqpars = decodeURI(reqpars);
+ 
+/*
+  console.log("1: "+reqpars);
+  console.log("2: "+decodeURI(reqpars))
+  console.log("3: "+encodeURI(reqpars)) */
 
   if (reqpars === undefined) {
     
@@ -38,6 +44,7 @@ app.get("/api/:date?", function (req, res) {
       date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   } else if (reqpars.includes('-')) {
+
     var date = new Date(reqpars+' 00:00:00 UTC');
 
     if (date == "Invalid Date") {
@@ -61,7 +68,14 @@ app.get("/api/:date?", function (req, res) {
       
       
     } else {
-      res.json({ error: "Invalid Date" });
+
+      var date = new Date(reqpars+' 00:00:00 UTC');
+
+      if (date == "Invalid Date") {
+        //http://localhost:3000/api/2021-0-2
+        res.json({ error: "Invalid Date" });
+      } else  { res.json({ unix: date.getTime(), utc: date.toUTCString() })};
+  
     }
   });
 
