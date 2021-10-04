@@ -5,10 +5,13 @@
 var express = require('express');
 var app = express();
 
+// ***
+require('dotenv').config();
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+app.use(cors({ optionsSuccessStatus: 200 }));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
@@ -21,9 +24,30 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+  res.json({ greeting: 'hello API' });
 });
 
+// ***
+app.get("/api/:date?", function (req, res) {
+  let reqpars = req.params.date;
+
+  if (reqpars === undefined) {
+    date = new Date(Date.now());
+    var date_utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+      date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
+    res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
+  } else {
+    var arrayofstrings = reqpars.split('-');
+    if (arrayofstrings.length === 3) {
+      if (arrayofstrings[2].length === 0) arrayofstrings[2] = '01';
+      date_utc = new Date(Date.UTC(arrayofstrings[0], arrayofstrings[1] - 1, arrayofstrings[2], 0, 0, 0));
+      res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
+    } else {
+      res.json({ error: "Invalid Date" });
+    }
+  }
+
+});
 
 
 // listen for requests :)
