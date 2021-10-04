@@ -32,25 +32,27 @@ app.get("/api/:date?", function (req, res) {
   let reqpars = req.params.date;
 
   if (reqpars === undefined) {
-    date = new Date(Date.now());
+    var date = new Date(Date.now());
     var date_utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
       date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
-    res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
-  } else {
+    res.json({ unix: date.getTime(), utc: date.toString() });
+  } else if (reqpars.includes('-')) {
+    var date = new Date(reqpars);
+    res.json({ unix: date.getTime(), utc: date.toString() });
+  }
+    /*
     var arrayofstrings = reqpars.split('-');
     if (arrayofstrings.length === 3) {
       if (arrayofstrings[2].length === 0) arrayofstrings[2] = '01';
       date_utc = new Date(Date.UTC(arrayofstrings[0], arrayofstrings[1] - 1, arrayofstrings[2], 0, 0, 0));
       res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
-    } else if (!isNaN(reqpars)) {
-      date_utc = new Date(parseInt(reqpars));
-      res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
+    }*/ else if (!isNaN(reqpars)) {
+      date = new Date(parseInt(reqpars));
+      res.json({ unix: date.getTime(), utc: date.toUTCString() });
     } else {
       res.json({ error: "Invalid Date" });
     }
-  }
-
-});
+  });
 
 
 // listen for requests :)
