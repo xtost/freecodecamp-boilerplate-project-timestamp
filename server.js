@@ -31,15 +31,12 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date?", function (req, res) {
   let reqpars = req.params.date;
   reqpars = decodeURI(reqpars);
-  console.log(reqpars);
- 
 /*
   console.log("1: "+reqpars);
   console.log("2: "+decodeURI(reqpars))
   console.log("3: "+encodeURI(reqpars)) */
 
-  if (reqpars === undefined) {
-    
+  if (reqpars === 'undefined') {    
     var date = new Date(Date.now());
     var date_utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
       date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
