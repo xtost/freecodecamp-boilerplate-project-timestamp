@@ -39,6 +39,11 @@ app.get("/api/:date?", function (req, res) {
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   } else if (reqpars.includes('-')) {
     var date = new Date(reqpars+' 00:00:00 UTC');
+
+    if (date == "Invalid Date") {
+      //http://localhost:3000/api/2021-0-2
+      res.json({ error: "Invalid Date" });
+    } 
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   }
     /*
@@ -52,7 +57,7 @@ app.get("/api/:date?", function (req, res) {
       if (date == "Invalid Date") {
         //http://localhost:3000/api/2021-0-2
         res.json({ error: "Invalid Date" });
-      } else {res.json({ error: date.toUTCString() });}
+      } else { res.json({ unix: date.getTime(), utc: date.toUTCString() }); }
       
       
     } else {
