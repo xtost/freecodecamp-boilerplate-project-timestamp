@@ -52,7 +52,7 @@ app.get("/api/:date?", function (req, res) {
       if (date == "Invalid Date") {
         //http://localhost:3000/api/2021-0-2
         res.json({ error: "Invalid Date" });
-      } else {res.json({ unix: date.getTime(), utc: date.toUTCString() });}
+      } else {res.json({ error: date.toUTCString() });}
       
       
     } else {
