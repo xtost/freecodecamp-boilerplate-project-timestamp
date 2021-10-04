@@ -42,6 +42,9 @@ app.get("/api/:date?", function (req, res) {
       if (arrayofstrings[2].length === 0) arrayofstrings[2] = '01';
       date_utc = new Date(Date.UTC(arrayofstrings[0], arrayofstrings[1] - 1, arrayofstrings[2], 0, 0, 0));
       res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
+    } else if (!isNaN(reqpars)) {
+      date_utc = new Date(parseInt(reqpars));
+      res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
     } else {
       res.json({ error: "Invalid Date" });
     }
