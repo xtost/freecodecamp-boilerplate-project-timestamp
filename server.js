@@ -49,7 +49,12 @@ app.get("/api/:date?", function (req, res) {
       res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
     }*/ else if (!isNaN(reqpars)) {
       date = new Date(parseInt(reqpars));
-      res.json({ unix: date.getTime(), utc: date.toUTCString() });
+      if (date == "Invalid Date") {
+        //http://localhost:3000/api/2021-0-2
+        res.json({ error: "Invalid Date" });
+      } else {res.json({ unix: date.getTime(), utc: date.toUTCString() });}
+      
+      
     } else {
       res.json({ error: "Invalid Date" });
     }
