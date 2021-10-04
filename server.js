@@ -31,18 +31,14 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date?", function (req, res) {
   let reqpars = req.params.date;
 
-  console.log(1)
   if (reqpars === undefined) {
     
-  console.log(2)
     var date = new Date(Date.now());
     var date_utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
       date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   } else if (reqpars.includes('-')) {
-    
-     console.log(3)
-    var date = new Date(reqpars);
+    var date = new Date(reqpars+' 00:00:00 UTC');
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   }
     /*
@@ -52,11 +48,9 @@ app.get("/api/:date?", function (req, res) {
       date_utc = new Date(Date.UTC(arrayofstrings[0], arrayofstrings[1] - 1, arrayofstrings[2], 0, 0, 0));
       res.json({ unix: date_utc.getTime(), utc: date_utc.toUTCString() });
     }*/ else if (!isNaN(reqpars)) {
-      console.log(4);
       date = new Date(parseInt(reqpars));
       res.json({ unix: date.getTime(), utc: date.toUTCString() });
     } else {
-      console.log(5)
       res.json({ error: "Invalid Date" });
     }
   });
